@@ -8,3 +8,4 @@
 *.pdf
 !main.pdf
 .DS_Store
+**/.zed

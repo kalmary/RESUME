@@ -1,42 +1,37 @@
 \documentclass[10pt, letterpaper]{article}
 
-% Packages:
+% Packages
 \usepackage[
-    ignoreheadfoot, % set margins without considering header and footer
-    top=2 cm, % seperation between body and page edge from the top
-    bottom=2 cm, % seperation between body and page edge from the bottom
-    left=2 cm, % seperation between body and page edge from the left
-    right=2 cm, % seperation between body and page edge from the right
-    footskip=1.0 cm, % seperation between body and footer
-    % showframe % for debugging 
-]{geometry} % for adjusting page geometry
-\usepackage[explicit]{titlesec} % for customizing section titles#
-\usepackage{tabularx} % for making tables with fixed width columns
-\usepackage{array} % tabularx requires this
-\usepackage[dvipsnames]{xcolor} % for coloring text
-\definecolor{primaryColor}{RGB}{0, 79, 144} % define primary color
-\usepackage{xcolor}
-\usepackage{enumitem} % for customizing lists
-\usepackage{fontawesome5} % for using icons
-\usepackage{amsmath} % for math
+    ignoreheadfoot,
+    top=2 cm,
+    bottom=2 cm,
+    left=2 cm,
+    right=2 cm,
+    footskip=1.0 cm
+]{geometry}
+\usepackage[explicit]{titlesec}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{fontawesome5}
 \usepackage[
     pdftitle={Michał Siniarski's CV},
     pdfauthor={Michał Siniarski},
     pdfcreator={LaTeX with RenderCV},
     colorlinks=true,
     urlcolor=primaryColor
-]{hyperref} % for links, metadata and bookmarks
-\usepackage[pscoord]{eso-pic} % for floating text on the page
-\usepackage{calc} % for calculating lengths
-\usepackage{bookmark} % for bookmarks
-\usepackage{lastpage} % for getting the total number of pages
-\usepackage{changepage} % for one column entries (adjustwidth environment)
-\usepackage{paracol} % for two and three column entries
-\usepackage{ifthen} % for conditional statements
-\usepackage{needspace} % for avoiding page brake right after the section title
-\usepackage{iftex} % check if engine is pdflatex, xetex or luatex
+]{hyperref}
+\usepackage{bookmark}
+\usepackage{lastpage}
+\usepackage{changepage}
+\usepackage{calc}
+\usepackage{paracol}
+\usepackage{ifthen}
+\usepackage{needspace}
+\usepackage{iftex}
 
-% Ensure that generate pdf is machine readable/ATS parsable:
+\definecolor{primaryColor}{RGB}{0, 79, 144}
+
+% ATS-readable PDF
 \ifPDFTeX
     \input{glyphtounicode}
     \pdfgentounicode=1
@@ -45,48 +40,41 @@
     \usepackage{lmodern}
 \fi
 
-\usepackage[default, type1]{sourcesanspro} 
+\usepackage[default, type1]{sourcesans}
 
-% Some settings:
-\AtBeginEnvironment{adjustwidth}{\partopsep0pt} % remove space before adjustwidth environment
-\pagestyle{empty} % no header or footer
-\setcounter{secnumdepth}{0} % no section numbering
-\setlength{\parindent}{0pt} % no indentation
-\setlength{\topskip}{0pt} % no top skip
-\setlength{\columnsep}{0.15cm} % set column seperation
+% Layout
+\AtBeginEnvironment{adjustwidth}{\partopsep0pt}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}
+\setlength{\topskip}{0pt}
+\setlength{\columnsep}{0.15cm}
+
 \makeatletter
-\let\ps@customFooterStyle\ps@plain % Copy the plain style to customFooterStyle
+\let\ps@customFooterStyle\ps@plain
 \patchcmd{\ps@customFooterStyle}{\thepage}{
     \color{gray}\textit{\small Michał Siniarski - Page \thepage{} of \pageref*{LastPage}}
-}{}{} % replace number by desired string
+}{}{}
 \makeatother
 \pagestyle{customFooterStyle}
 
 \titleformat{\section}{
-    % avoid page braking right after the section title
     \needspace{4\baselineskip}
-    % make the font size of the section title large and color it with the primary color
     \Large\color{primaryColor}
 }{
 }{
 }{
-    % print bold title, give 0.15 cm space and draw a line of 0.8 pt thickness
-    % from the end of the title to the end of the body
     \textbf{#1}\hspace{0.15cm}\titlerule[0.8pt]\hspace{-0.1cm}
-}[] % section title formatting
+}[]
 
 \titlespacing{\section}{
-    % left space:
     -1pt
 }{
-    % top space:
     0.2 cm
 }{
-    % bottom space:
     0.2 cm
-} % section title spacing
+}
 
-% \renewcommand\labelitemi{$\vcenter{\hbox{\small$\bullet$}}$} % custom bullet points
+% Entry environments
 \newenvironment{highlights}{
     \begin{itemize}[
         topsep=0.10 cm,
@@ -97,20 +85,7 @@
     ]
 }{
     \end{itemize}
-} % new environment for highlights
-
-\newenvironment{highlightsforbulletentries}{
-    \begin{itemize}[
-        topsep=0.10 cm,
-        parsep=0.10 cm,
-        partopsep=0pt,
-        itemsep=0pt,
-        leftmargin=10pt
-    ]
-}{
-    \end{itemize}
-} % new environment for highlights for bullet entries
-
+}
 
 \newenvironment{onecolentry}{
     \begin{adjustwidth}{
@@ -120,52 +95,42 @@
     }
 }{
     \end{adjustwidth}
-} % new environment for one column entries
+}
 
-\newenvironment{twocolentry}[2][]{
+\newenvironment{twocolentry}[1]{
     \onecolentry
-    \def\secondColumn{#2}
+    \def\secondColumn{#1}
     \setcolumnwidth{\fill, 4.5 cm}
     \begin{paracol}{2}
 }{
     \switchcolumn \raggedleft \secondColumn
     \end{paracol}
     \endonecolentry
-} % new environment for two column entries
+}
 
-\newenvironment{threecolentry}[3][]{
+\newenvironment{threecolentry}[2]{
     \onecolentry
-    \def\thirdColumn{#3}
+    \def\thirdColumn{#2}
     \setcolumnwidth{1 cm, \fill, 4.5 cm}
     \begin{paracol}{3}
-    {\raggedright #2} \switchcolumn
+    {\raggedright #1} \switchcolumn
 }{
     \switchcolumn \raggedleft \thirdColumn
     \end{paracol}
     \endonecolentry
-} % new environment for three column entries
+}
 
 \newenvironment{header}{
     \setlength{\topsep}{0pt}\par\kern\topsep\centering\color{primaryColor}\linespread{1.5}
 }{
     \par\kern\topsep
-} % new environment for the header
+}
 
-\newcommand{\placelastupdatedtext}{% \placetextbox{<horizontal pos>}{<vertical pos>}{<stuff>}
-  \AddToShipoutPictureFG*{% Add <stuff> to current page foreground
-    \put(
-        \LenToUnit{\paperwidth-2 cm-0.2 cm+0.05cm},
-        \LenToUnit{\paperheight-1.0 cm}
-    )
-  }%
-}%
-
-% save the original href command in a new command:
+% Links
 \let\hrefWithoutArrow\href
-
-% new command for external links:
-\renewcommand{\href}[2]{\hrefWithoutArrow{#1}{\ifthenelse{\equal{#2}{}}{ }{#2 }\raisebox{.15ex}{\footnotesize \faExternalLink*}}}
-
+\renewcommand{\href}[2]{%
+    \hrefWithoutArrow{#1}{\ifthenelse{\equal{#2}{}}{ }{#2 }\raisebox{.15ex}{\footnotesize \faExternalLink*}}
+}
 
 \begin{document}
     \newcommand{\AND}{\unskip
@@ -175,7 +140,6 @@
     \newsavebox\ANDbox
     \sbox\ANDbox{}
 
-    \placelastupdatedtext
     \begin{header}
         \fontsize{30 pt}{30 pt}
         \textbf{Michał Siniarski}
@@ -195,197 +159,161 @@
         \kern 0.25 cm%
         \AND%
         \kern 0.25 cm%
-        \mbox{\hrefWithoutArrow{https://github.com/kalmary}{
-        {\footnotesize\faGithub}\hspace*{0.13cm}kalmary}}%
+        \mbox{\hrefWithoutArrow{https://github.com/kalmary}{{\footnotesize\faGithub}\hspace*{0.13cm}kalmary}}%
         \AND%
         \kern 0.3 cm%
         \mbox{\hrefWithoutArrow{https://linkedin.com/in/michał-siniarski-a996a425b}{{\footnotesize\faLinkedinIn}\hspace*{0.13cm}michał-siniarski}}%
-        \end{header}
-
-    % \vspace{0.3 cm - 0.3 cm}
-
+    \end{header}
 
     \section{Personal Profile}
 
-
-
-        
-        \begin{onecolentry}
-             I am a graduate of Warsaw University of Technology and a dedicated AI Engineer currently working at a leading Polish scientific institute. My specialization lies in Artificial Intelligence, with a focus on a wide array of applications and~methodologies. I thrive on exploring the multiple facets of AI and its real-world applications, constantly seeking new challenges and opportunities for growth.
-        \end{onecolentry}
+    \begin{onecolentry}
+        I am a graduate of Warsaw University of Technology and a dedicated AI Engineer currently working at a leading Polish scientific institute. My specialization lies in Artificial Intelligence, with a focus on a wide array of applications and~methodologies. I thrive on exploring the multiple facets of AI and its real-world applications, constantly seeking new challenges and opportunities for growth.
+    \end{onecolentry}
 
     \section{Experience}
 
-        \begin{twocolentry}{
-            Warsaw, Poland
+    \begin{twocolentry}{
+        Warsaw, Poland
 
         July 2024 - Present
-        }
-            \textbf{Air Force Institute of Technology | AI Engineer}
-            \begin{highlights}
+    }
+        \textbf{Air Force Institute of Technology | AI Engineer}
+        \begin{highlights}
             \item Management of AI team workflows, including task prioritization and strategic problem-solving to meet project milestones,
             \item Design and implementation of ML architectures and preprocessing pipelines for multi-modal data (audio, visual, point cloud),
             \item Performance optimization through model training and evaluation cycles.
-            \end{highlights}
-            \vspace{0.2 cm}
-            \textbf{Key achievements and projects:}
-            \begin{highlights}
-                \item CNN and ResNet based models for frequency domain signals (FFT) and spectrograms (STFT) analysis, SAE model for sound denoising,
-                \item RandLANet model implementation for large scale point cloud semantic segmentation (Mean Intersection over Union at 87\%),
-                \item Optuna library based system for fast and efficient search of optimum model configuration, and training hyperparameters.
-            \end{highlights}
-        \end{twocolentry} 
-        
-                \begin{twocolentry}{
-            Warsaw, Poland, \\ April 2023 - June 2024
-        }
-            \textbf{Air Force Institute of Technology | Project Manager}\newline
-            Management of team responsible for tasks within the European HYDEF defense program. Coordination of internal activities, in the field of direct-hit warhead technology evaluation. Communication with members of the project consortium and alignment with the overarching project objectives. \\
-            \vspace{0.1 cm}
-            
-            \textbf{Core contributions:}
-            \begin{highlights}
-                \item Planning FEM simulations for design evaluation,
-                \item Duties execution through PRINCE2 methodology,
-                \item Working in an international environment,
-                \item Presenting work plans and results to diverse international audiences,
-                \item Work package Leadership.
-            \end{highlights}
-        \end{twocolentry}
-        \vspace{0.4 cm}
-                        \begin{twocolentry}{
-            Warsaw, Poland, \\ July 2022
-        }
-            
-            \textbf{Air Force Institute of Technology | Internship}\newline
-            Development of a Python-based system for Non-Destructive Testing (NDT) inspections. Extensive study and implementation of NDT methods in data acquisition, processing, and visualization for defect detection in aerospace components.
-        \end{twocolentry}
+        \end{highlights}
 
-        
+        \vspace{0.2 cm}
 
+        \textbf{Key achievements and projects:}
+        \begin{highlights}
+            \item CNN and ResNet based models for frequency domain signals (FFT) and spectrograms (STFT) analysis, SAE model for sound denoising,
+            \item RandLANet model implementation for large scale point cloud semantic segmentation (Mean Intersection over Union at 87\%),
+            \item Optuna library based system for fast and efficient search of optimum model configuration, and training hyperparameters.
+        \end{highlights}
+    \end{twocolentry}
 
-        % \vspace{0.1 cm}
+    \begin{twocolentry}{
+        Warsaw, Poland, \\ April 2023 - June 2024
+    }
+        \textbf{Air Force Institute of Technology | Project Manager}\newline
+        Management of team responsible for tasks within the European HYDEF defense program. Coordination of internal activities, in the field of direct-hit warhead technology evaluation. Communication with members of the project consortium and alignment with the overarching project objectives. \\
+
+        \vspace{0.1 cm}
+
+        \textbf{Core contributions:}
+        \begin{highlights}
+            \item Planning FEM simulations for design evaluation,
+            \item Duties execution through PRINCE2 methodology,
+            \item Working in an international environment,
+            \item Presenting work plans and results to diverse international audiences,
+            \item Work package Leadership.
+        \end{highlights}
+    \end{twocolentry}
+
+    \vspace{0.4 cm}
+
+    \begin{twocolentry}{
+        Warsaw, Poland, \\ July 2022
+    }
+        \textbf{Air Force Institute of Technology | Internship}\newline
+        Development of a Python-based system for Non-Destructive Testing (NDT) inspections. Extensive study and implementation of NDT methods in data acquisition, processing, and visualization for defect detection in aerospace components.
+    \end{twocolentry}
+
     \newpage
     \section{Education}
 
+    \begin{threecolentry}{\textbf{MSc}}{
+        2023 - 2025
+    }
+        \textbf{Warsaw University of Technology, Faculty of Power and Aeronautical Engineering
+        Warsaw University of Technology}: \\ \textbf{Aeronautical Engineering}
+        \begin{highlights}
+            \item Specialization: Automation and Aerospace Systems,
+            \item Master's thesis focused on the implementation of a Structural Health Monitoring (SHM) system, utilizing AI for fast direct hit parameters estimation,
+            \item Graduated with distinction.
+        \end{highlights}
+    \end{threecolentry}
 
+    \vspace{0.3 cm}
 
-        
-        \begin{threecolentry}{\textbf{MSc}}{
-            2023 - 2025
-        }
-            \textbf{Warsaw University of Technology, Faculty of Power and Aeronautical Engineering
-Warsaw University of Technology}: \\ \textbf{Aeronautical Engineering}
-            \begin{highlights}
-                \item Specialization: Automation and Aerospace Systems,
-                \item Master's thesis focused on the implementation of a Structural Health Monitoring (SHM) system, utilizing AI for fast direct hit parameters estimation,
-                \item Graduated with distinction.
-            \end{highlights}
-        \end{threecolentry}
+    \begin{threecolentry}{\textbf{Eng}}{
+        2019 - 2023
+    }
+        \textbf{Warsaw University of Technology, Faculty of Power and Aeronautical Engineering
+        Warsaw University of Technology}: \\ \textbf{Aeronautical Engineering}
+        \begin{highlights}
+            \item Specialization: Aircraft Propulsion,
+            \item Engineering Thesis: Development of a non-destructive testing (NDT) station for aircraft inspection, involving hardware selection and full, open-source software implementation.
+        \end{highlights}
+    \end{threecolentry}
 
-        
-        \vspace{0.3 cm}
-
-        \begin{threecolentry}{\textbf{Eng}}{
-            2019 - 2023
-        }
-            \textbf{Warsaw University of Technology, Faculty of Power and Aeronautical Engineering
-Warsaw University of Technology}: \\ \textbf{Aeronautical Engineering}
-            \begin{highlights}
-                \item Specialization: Aircraft Propulsion,
-                \item Engineering Thesis: Development of a non-destructive testing (NDT) station for aircraft inspection, involving hardware selection and full, open-source software implementation.
-            \end{highlights}
-        \end{threecolentry}
-        
-    
     \section{Publications}
 
+    \begin{samepage}
+        \begin{twocolentry}{
+            Oct 2024
+        }
+            \textbf{Development of an Open-Source Robotic NDT Solution for Automated Composite Repair Testing}
 
+            \vspace{0.10 cm}
 
-        
-        \begin{samepage}
-            \begin{twocolentry}{
-                Oct 2024
-            }
-                \textbf{Development of an Open-Source Robotic NDT Solution for Automated Composite Repair Testing}
+            \mbox{\textbf{\textit{Michał Siniarski}}}, \mbox{Piotr Synaszko}, \mbox{Krzysztof Dragan}
+            \vspace{0.10 cm}
 
-                \vspace{0.10 cm}
+            \href{https://doi.org/10.2478/fas-2023-0009}{doi.org/10.2478/fas-2023-0009}
+        \end{twocolentry}
+    \end{samepage}
 
-                \mbox{\textbf{\textit{Michał Siniarski}}}, \mbox{Piotr Synaszko}, \mbox{Krzysztof Dragan}
-                \vspace{0.10 cm}
-
-        \href{https://doi.org/10.2478/fas-2023-0009}{doi.org/10.2478/fas-2023-0009}
-            \end{twocolentry}
-        \end{samepage}
-
-        % \vspace{0.1 cm}
-    
     \section{Skills and technologies}
-    
-        \begin{twocolentry}{
-        }
-            \textbf{Tech stack:}
-            \begin{highlights}
-                \item \textbf{Python}: \quad proficiency in libraries for processing, analysis, data representation and machine learning (\textbf{PyTorch}, \textbf{TensorFlow}, \textbf{scikit-learn}, \textbf{OpenCV}, \textbf{NumPy}, \textbf{pandas}, \textbf{Matplotlib}, \textbf{Optuna}, experience with field related tools (e. g. \textbf{Conda}, \textbf{UV}),
-                \item SQL: \quad intermediate knowledge,
-                \item Docker: \quad intermediate knowledge,
-                \item Rust: \quad basic knowledge,
-                \item MATLAB: \quad intermediate knowledge,
-                \item LaTeX: \quad intermediate knowledge,
-            \end{highlights}
-        \end{twocolentry}
 
+    \begin{twocolentry}{}
+        \textbf{Tech stack:}
+        \begin{highlights}
+            \item \textbf{Python}: \quad proficiency in libraries for processing, analysis, data representation and machine learning (\textbf{PyTorch}, \textbf{TensorFlow}, \textbf{scikit-learn}, \textbf{OpenCV}, \textbf{NumPy}, \textbf{pandas}, \textbf{Matplotlib}, \textbf{Optuna}, experience with field related tools (e. g. \textbf{Conda}, \textbf{UV}),
+            \item SQL: \quad intermediate knowledge,
+            \item Docker: \quad intermediate knowledge,
+            \item Rust: \quad basic knowledge,
+            \item MATLAB: \quad intermediate knowledge,
+            \item LaTeX: \quad intermediate knowledge,
+        \end{highlights}
+    \end{twocolentry}
 
-        % \vspace{0.1 cm}
+    \begin{twocolentry}{}
+        \textbf{Others:}
+        \begin{highlights}
+            \item Proficiency with \textbf{GitHub},
+            \item Familiarity with Linux OS and MacOS,
+            \item NX Modeling – Certified by the Center for Competence and Training for modeling and assembly of 3D objects or structures.
+        \end{highlights}
+    \end{twocolentry}
 
-        
+    \begin{twocolentry}{}
+        \textbf{Spoken Languages:}
+        \begin{highlights}
+            \item Polish (native),
+            \item English (fluent).
+        \end{highlights}
+    \end{twocolentry}
 
-        \begin{twocolentry}{
-        }
-            \textbf{Others:}
-            \begin{highlights}
-                \item Proficiency with \textbf{GitHub}, 
-                \item Familiarity with Linux OS and MacOS,
-                \item NX Modeling – Certified by the Center for Competence and Training for modeling and assembly of 3D objects or structures.
-            \end{highlights}
-        \end{twocolentry}
-
-                \begin{twocolentry}{
-        }
-            \textbf{Spoken Languages:}
-            \begin{highlights}
-                \item Polish (native),
-                \item English (fluent).
-            \end{highlights}
-        \end{twocolentry}
-
-
-
-    
     \section{Interests}
 
+    \begin{twocolentry}{}
+        \begin{highlights}
+            \item Programming,
+            \item PC building,
+            \item Photography.
+        \end{highlights}
+    \end{twocolentry}
 
-    
-        % \vspace{0.1 cm}
-
-        
-        \begin{twocolentry}{
-        }
-            \begin{highlights}
-                \item Programming,
-                \item PC building,
-                \item Photography.
-            \end{highlights}
-        \end{twocolentry}
-
-
-
-\vspace*{\fill} % Wypełnia pozostałe miejsce, przesuwając minipage na dół
-\begin{minipage}[t]{\textwidth} % minipage o szerokości tekstu, wyrównany do góry
-\small % Zmniejsza rozmiar czcionki
-\noindent
-\color{gray}
-\centering I hereby give consent for my personal data to be processed for the purpose of conducting recruitment for the position for which\\I am applying.
-\end{minipage}    
+    \vspace*{\fill}
+    \begin{minipage}[t]{\textwidth}
+        \small
+        \noindent
+        \color{gray}
+        \centering I hereby give consent for my personal data to be processed for the purpose of conducting recruitment for the position for which\\I am applying.
+    \end{minipage}
 
 \end{document}
