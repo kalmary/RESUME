@@ -6,7 +6,7 @@
 *.synctex.gz
 *.toc
 *.pdf
-!main.pdf
+!Michal-Siniarski-CV.pdf
 .DS_Store
 **/.zed
 **/.vscode

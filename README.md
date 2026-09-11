@@ -1,6 +1,6 @@
 # Michał Siniarski - Resume
 
-[Download the resume as PDF](https://github.com/kalmary/RESUME/raw/refs/heads/main/main.pdf)
+[Download the resume as PDF](https://github.com/kalmary/RESUME/raw/refs/heads/main/Michal-Siniarski-CV.pdf)
 
 ![Resume page 1](assets/resume-page-1.jpg)
 

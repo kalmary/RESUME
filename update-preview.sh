@@ -4,6 +4,7 @@ set -euo pipefail
 
 root_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 input_pdf="$root_dir/main.pdf"
+published_pdf="$root_dir/Michal-Siniarski-CV.pdf"
 output_dir="$root_dir/assets"
 
 if ! command -v pdftoppm >/dev/null 2>&1; then
@@ -17,5 +18,6 @@ if [[ ! -f "$input_pdf" ]]; then
 fi
 
 mkdir -p "$output_dir"
+cp "$input_pdf" "$published_pdf"
 find "$output_dir" -maxdepth 1 -type f -name 'resume-page-*.jpg' -delete
 pdftoppm -jpeg -jpegopt quality=90 -r 180 "$input_pdf" "$output_dir/resume-page"
