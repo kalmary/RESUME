@@ -4,8 +4,8 @@ set -euo pipefail
 
 root_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 input_pdf="$root_dir/main.pdf"
-published_pdf="$root_dir/Michal-Siniarski-CV.pdf"
 output_dir="$root_dir/assets"
+published_pdf="$output_dir/Michal-Siniarski-CV.pdf"
 
 if ! command -v pdftoppm >/dev/null 2>&1; then
     echo "pdftoppm is required." >&2
