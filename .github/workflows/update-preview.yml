@@ -1,0 +1,12 @@
+name: Update preview
+
+on:
+  push:
+
+jobs:
+  update-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y poppler-utils
+      - run: ./update-preview.sh
